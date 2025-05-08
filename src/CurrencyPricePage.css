@@ -1,0 +1,49 @@
+.currency-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  background: #181a20;
+  min-height: 100vh;
+}
+
+.chart-section {
+  flex: 2;
+  background: #222531;
+  padding: 32px;
+  border-radius: 16px;
+}
+
+.trade-section {
+  flex: 1;
+  background: #222531;
+  padding: 32px;
+  border-radius: 16px;
+}
+
+.trade-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trade-box input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #181a20;
+  color: #fff;
+}
+
+.trade-box button {
+  margin-right: 8px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #fcd535;
+  color: #181a20;
+  font-weight: bold;
+  cursor: pointer;
+} 
