@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Tab, Box, TextField, Typography, Paper, IconButton, Button, CircularProgress, Alert, Avatar } from "@mui/material";
+import { Tabs, Tab, Box, TextField, Typography, Paper, IconButton, Button, CircularProgress, Alert, Avatar, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const getTodayString = () => {
@@ -125,29 +125,56 @@ const TradeWizard = ({ tipo, onClose, onFinish }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 3, maxWidth: 400, margin: '0 auto', background: '#181A20', color: '#fff', minHeight: 420 }}>
+    <Paper elevation={3} sx={{ p: 3, maxWidth: 400, margin: '0 auto', background: '#fff', color: '#ff7a00', minHeight: 420, borderRadius: 3, boxShadow: '0 2px 8px #ffb36622' }}>
       <Box sx={{ textAlign: 'center', mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{tipo === 'compra' ? 'Compra' : 'Venta'} {step}/3</Typography>
-        {step > 1 && <Typography variant="subtitle2" sx={{ color: '#aaa' }}>Nº de atención: {atencionId}</Typography>}
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#ff7a00' }}>{tipo === 'compra' ? 'Compra' : 'Venta'} {step}/3</Typography>
+        {step > 1 && <Typography variant="subtitle2" sx={{ color: '#b85c00' }}>Nº de atención: {atencionId}</Typography>}
       </Box>
       {step === 1 && (
         <form onSubmit={handleBankSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Typography sx={{ mb: 2 }}>Completar datos bancarios</Typography>
-          <TextField name="nombre" label="Nombre" value={bankData.nombre} onChange={handleBankChange} required sx={{ input: { color: '#fff' } }} />
-          <TextField name="banco" label="Banco" value={bankData.banco} onChange={handleBankChange} required sx={{ input: { color: '#fff' } }} />
-          <TextField name="tipo" label="Tipo de cuenta" value={bankData.tipo} onChange={handleBankChange} required sx={{ input: { color: '#fff' } }} />
-          <TextField name="cuenta" label="Número de cuenta" value={bankData.cuenta} onChange={handleBankChange} required sx={{ input: { color: '#fff' } }} />
-          <Button type="submit" variant="contained" sx={{ background: '#C2185B', color: '#fff', fontWeight: 'bold', mt: 2 }} disabled={loading}>
+          <Typography sx={{ mb: 2, color: '#b85c00' }}>Completar datos bancarios</Typography>
+          <TextField name="nombre" label="Nombre" value={bankData.nombre} onChange={handleBankChange} required sx={{ input: { color: '#ff7a00' } }} />
+          <FormControl fullWidth sx={{ mt: 1 }}>
+            <InputLabel id="banco-label">Banco</InputLabel>
+            <Select
+              labelId="banco-label"
+              name="banco"
+              value={bankData.banco}
+              label="Banco"
+              onChange={handleBankChange}
+              required
+            >
+              <MenuItem value="Banco Estado">Banco Estado</MenuItem>
+              <MenuItem value="Banco de Chile">Banco de Chile</MenuItem>
+              <MenuItem value="Otro Banco">Otro Banco</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{ mt: 1 }}>
+            <InputLabel id="tipo-cuenta-label">Tipo de cuenta</InputLabel>
+            <Select
+              labelId="tipo-cuenta-label"
+              name="tipo"
+              value={bankData.tipo}
+              label="Tipo de cuenta"
+              onChange={handleBankChange}
+              required
+            >
+              <MenuItem value="Ahorro">Ahorro</MenuItem>
+              <MenuItem value="Corriente">Corriente</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField name="cuenta" label="Número de cuenta" value={bankData.cuenta} onChange={handleBankChange} required sx={{ input: { color: '#ff7a00' } }} />
+          <Button type="submit" variant="contained" sx={{ background: 'linear-gradient(90deg, #ffb366 0%, #ff7a00 100%)', color: '#fff', fontWeight: 'bold', mt: 2, borderRadius: 2 }} disabled={loading}>
             {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : 'Continuar'}
           </Button>
         </form>
       )}
       {step === 2 && (
         <Box>
-          <Box sx={{ mb: 2, minHeight: 100, background: '#222', borderRadius: 2, p: 2, maxHeight: 120, overflowY: 'auto' }}>
+          <Box sx={{ mb: 2, minHeight: 100, background: '#fff7f0', borderRadius: 2, p: 2, maxHeight: 120, overflowY: 'auto' }}>
             {chat.map((msg, i) => (
               <Box key={i} sx={{ display: 'flex', justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start', mb: 1 }}>
-                <Typography align={msg.from === 'user' ? 'right' : 'left'} sx={{ color: msg.from === 'user' ? '#fff' : '#80cbc4', fontSize: 15, background: msg.from === 'user' ? 'rgba(255,255,255,0.08)' : 'rgba(128,203,196,0.08)', borderRadius: 2, px: 1.5, py: 0.5, maxWidth: '80%' }}>
+                <Typography align={msg.from === 'user' ? 'right' : 'left'} sx={{ color: msg.from === 'user' ? '#ff7a00' : '#b85c00', fontSize: 15, background: msg.from === 'user' ? 'rgba(255,122,0,0.08)' : 'rgba(255,179,102,0.08)', borderRadius: 2, px: 1.5, py: 0.5, maxWidth: '80%' }}>
                   {msg.text.split('\n').map((line, idx) => <span key={idx}>{line}<br /></span>)}
                 </Typography>
               </Box>
@@ -160,51 +187,53 @@ const TradeWizard = ({ tipo, onClose, onFinish }) => {
               value={userMsg}
               onChange={e => setUserMsg(e.target.value)}
               placeholder="Escribir mensaje"
-              sx={{ input: { color: '#fff' } }}
+              sx={{ input: { color: '#ff7a00' } }}
             />
-            <Button variant="contained" onClick={handleSendMsg} sx={{ background: '#80cbc4', color: '#222', fontWeight: 'bold' }}>Enviar</Button>
+            <Button variant="contained" onClick={handleSendMsg} sx={{ background: '#ffb366', color: '#fff', fontWeight: 'bold', borderRadius: 2 }}>Enviar</Button>
           </Box>
           <Button
             fullWidth
             variant="contained"
-            sx={{ background: '#C2185B', color: '#fff', fontWeight: 'bold', mt: 2 }}
+            sx={{ background: 'linear-gradient(90deg, #ffb366 0%, #ff7a00 100%)', color: '#fff', fontWeight: 'bold', mt: 2, borderRadius: 2 }}
             disabled={!confirmEnabled || loading}
             onClick={handleConfirm}
           >
             {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : 'Confirmar depósito'}
           </Button>
-          <Typography sx={{ mt: 2, color: '#aaa', fontSize: 14 }}>Tiempo restante: {min}:{sec}</Typography>
+          <Typography sx={{ mt: 2, color: '#b85c00', fontSize: 14 }}>Tiempo restante: {min}:{sec}</Typography>
         </Box>
       )}
       {step === 3 && showReceipt && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Alert severity="success" sx={{ mb: 2, background: '#222', color: '#fff', border: 'none' }}>¡Operación completada!</Alert>
-          <Typography variant="subtitle1" sx={{ mb: 2 }}>Comprobante de pago</Typography>
-          <Box sx={{ background: '#222', borderRadius: 2, p: 3, mb: 2 }}>
-            <Typography variant="body2">Nº de atención: {atencionId}</Typography>
-            <Typography variant="body2">Nombre: {bankData.nombre}</Typography>
-            <Typography variant="body2">Banco: {bankData.banco}</Typography>
-            <Typography variant="body2">Tipo de cuenta: {bankData.tipo}</Typography>
-            <Typography variant="body2">N° de cuenta: {bankData.cuenta}</Typography>
-            <Typography variant="body2" sx={{ mt: 2 }}>¡Gracias por operar con nosotros!</Typography>
+          <Alert severity="success" sx={{ mb: 2, background: '#fff7f0', color: '#ff7a00', border: 'none' }}>¡Operación completada!</Alert>
+          <Typography variant="subtitle1" sx={{ mb: 2, color: '#ff7a00' }}>Comprobante de pago</Typography>
+          <Box sx={{ background: '#fff7f0', borderRadius: 2, p: 3, mb: 2 }}>
+            <Typography variant="body2" sx={{ color: '#b85c00' }}>Nº de atención: {atencionId}</Typography>
+            <Typography variant="body2" sx={{ color: '#b85c00' }}>Nombre: {bankData.nombre}</Typography>
+            <Typography variant="body2" sx={{ color: '#b85c00' }}>Banco: {bankData.banco}</Typography>
+            <Typography variant="body2" sx={{ color: '#b85c00' }}>Tipo de cuenta: {bankData.tipo}</Typography>
+            <Typography variant="body2" sx={{ color: '#b85c00' }}>N° de cuenta: {bankData.cuenta}</Typography>
+            <Typography variant="body2" sx={{ mt: 2, color: '#b85c00' }}>¡Gracias por operar con nosotros!</Typography>
           </Box>
-          {!showReview ? (
-            <Button variant="contained" sx={{ background: '#C2185B', color: '#fff', fontWeight: 'bold', mb: 2 }} onClick={() => setShowReview(true)}>Dejar reseña</Button>
-          ) : (
-            <Box>
-              <TextField
-                fullWidth
-                multiline
-                minRows={2}
-                value={review}
-                onChange={e => setReview(e.target.value)}
-                placeholder="Escribe tu reseña..."
-                sx={{ mb: 2, input: { color: '#fff' }, textarea: { color: '#fff' } }}
-              />
-              <Button variant="contained" sx={{ background: '#80cbc4', color: '#222', fontWeight: 'bold' }} onClick={handleReviewSubmit}>Enviar reseña</Button>
-            </Box>
-          )}
-          <Button variant="text" sx={{ color: '#fff', mt: 2 }} onClick={onClose}>Volver</Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
+            {!showReview ? (
+              <Button variant="contained" sx={{ background: '#ffb366', color: '#fff', fontWeight: 'bold', borderRadius: 2 }} onClick={() => setShowReview(true)}>Dejar reseña</Button>
+            ) : (
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  minRows={2}
+                  value={review}
+                  onChange={e => setReview(e.target.value)}
+                  placeholder="Escribe tu reseña..."
+                  sx={{ mb: 2, input: { color: '#ff7a00' }, textarea: { color: '#ff7a00' } }}
+                />
+                <Button variant="contained" sx={{ background: '#ffb366', color: '#fff', fontWeight: 'bold', borderRadius: 2 }} onClick={handleReviewSubmit}>Enviar reseña</Button>
+              </Box>
+            )}
+            <Button variant="text" sx={{ color: '#ff7a00' }} onClick={onClose}>Volver</Button>
+          </Box>
         </Box>
       )}
     </Paper>
@@ -320,14 +349,36 @@ const TradeBox = ({ onNewReview }) => {
   }
 
   return (
-    <Paper elevation={3} sx={{ p: 3, maxWidth: 350, margin: '0 auto', background: '#181A20', color: '#fff' }}>
-      <Tabs value={tab} onChange={handleTabChange} variant="fullWidth" sx={{ mb: 2 }}>
+    <Paper elevation={3} sx={{ p: 3, maxWidth: 350, margin: '0 auto', background: '#fff', color: '#ff7a00', borderRadius: 3, boxShadow: '0 2px 8px #ffb36622' }}>
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        variant="fullWidth"
+        sx={{
+          mb: 2,
+          '& .MuiTab-root': {
+            fontWeight: 700,
+            fontSize: 16,
+            color: '#b85c00',
+            textTransform: 'none',
+            minHeight: 48,
+            transition: 'color 0.2s',
+          },
+          '& .Mui-selected': {
+            color: '#ff7a00',
+          },
+          '& .MuiTabs-indicator': {
+            backgroundColor: '#ff7a00',
+            height: 3,
+          },
+        }}
+      >
         <Tab label="Comprar" />
         <Tab label="Vender" />
       </Tabs>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0, alignItems: 'center', mb: 2 }}>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#ff' }}>
             {labels.input}
           </Typography>
           <TextField
@@ -336,21 +387,21 @@ const TradeBox = ({ onNewReview }) => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder={labels.inputPlaceholder}
-            sx={{ mt: 1, input: { color: '#fff' } }}
+            sx={{ mt: 1, input: { color: '#ff7a00' } }}
           />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', my: 1, justifyContent: 'center' }}>
-          <Box sx={{ flex: 1, height: 1, borderBottom: '1px dashed #444' }} />
+          <Box sx={{ flex: 1, height: 1, borderBottom: '1px dashed #ffb366' }} />
           <IconButton
             onClick={handleSwapCurrency}
-            sx={{ mx: 2, background: '#222', color: '#fff', border: '2px solid #fff', boxShadow: 2 }}
+            sx={{ mx: 2, background: '#fff7f0', color: '#ff7a00', border: '2px solid #ffb366', boxShadow: 2 }}
           >
             <SwapHorizIcon />
           </IconButton>
-          <Box sx={{ flex: 1, height: 1, borderBottom: '1px dashed #444' }} />
+          <Box sx={{ flex: 1, height: 1, borderBottom: '1px dashed #ffb366' }} />
         </Box>
         <Box sx={{ width: '100%' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#ff7a00' }}>
             {labels.output}
           </Typography>
           <TextField
@@ -359,19 +410,19 @@ const TradeBox = ({ onNewReview }) => {
             value={result}
             InputProps={{ readOnly: true }}
             placeholder={labels.outputPlaceholder}
-            sx={{ mt: 1, input: { color: '#fff' } }}
+            sx={{ mt: 1, input: { color: '#ff7a00' } }}
           />
         </Box>
       </Box>
       <Button
         fullWidth
-        sx={{ mt: 2, background: '#C2185B', color: '#fff', fontWeight: 'bold', fontSize: 18, py: 1.5, borderRadius: 1, '&:hover': { background: '#ad1457' } }}
+        sx={{ mt: 2, background: 'linear-gradient(90deg, #ffb366 0%, #ff7a00 100%)', color: '#fff !important', fontWeight: 'bold', fontSize: 18, py: 1.5, borderRadius: 2, '&:hover': { background: '#ff7a00' } }}
         onClick={() => setShowWizard(true)}
         disabled={!inputValue || parseFloat(inputValue) <= 0}
       >
         {labels.action}
       </Button>
-      <Typography variant="body2" sx={{ color: '#aaa', mt: 2 }}>
+      <Typography variant="body2" sx={{ color: '#b85c00', mt: 2 }}>
         {loading ? 'Cargando valor del dólar...' : dolarValue ? `1 USD ≈ $${dolarValue.toLocaleString('es-CL', { minimumFractionDigits: 2 })} CLP` : 'No disponible'}
       </Typography>
     </Paper>
