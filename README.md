@@ -5,7 +5,8 @@
 Priz es una aplicación frontend, inspirada en los principios de **vibe-coding**, diseñada para facilitar el intercambio de divisas entre dólares estadounidenses (USD) y pesos chilenos (CLP) de una manera intuitiva, rápida y segura. Permite a los usuarios realizar compras y ventas de divisas aprovechando tipos de cambio competitivos obtenidos en tiempo real.
 
 El objetivo principal es ofrecer una experiencia de usuario fluida y transparente para todas las operaciones de cambio de moneda.
-
+<br> - [Visita la web](https://priz-eight.vercel.app/)
+<br> - [Ver video explicativo](https://youtu.be/5_0tfvq0Wa8)
 ## Tecnologías Principales Utilizadas
 
 El desarrollo del frontend de Priz se ha llevado a cabo utilizando el siguiente stack tecnológico y herramientas:
